@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    #数据源的基本配置
+    username: root
+    password: silvercrow@6133
+    url: jdbc:mysql://silvercrow.online:3306/surfshark?useUnicode=true&characterEncoding=utf-8&serverTimezone = UTC&useSSL=false
+    driver-class-name: com.alibaba.druid.proxy.DruidDriver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      validation-query: SELECT 1 FROM surfshark;
