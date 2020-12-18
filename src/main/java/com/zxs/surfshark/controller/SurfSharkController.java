@@ -1,10 +1,10 @@
 package com.zxs.surfshark.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.beans.SurfSharkEntity;
 import com.zxs.surfshark.service.SurfSharkService;
-import com.zxs.surfshark.service.impl.SurfSharkServiceImpl;
+import com.zxs.surfshark.util.SSLUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +15,21 @@ import org.springframework.web.client.RestTemplate;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
-import java.security.Provider;
-import java.util.Collections;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
-public class SurfShark {
+public class SurfSharkController {
     private static final String PROXY_HOST = "127.0.0.1";
     private static final int PROXY_PORT = 1080;
 
+    @Autowired
+    private SurfSharkService surfSharkService;
     @RequestMapping(value = "/surfshark")
-    public String surfshark(){
+    public String surfshark() throws KeyManagementException, NoSuchAlgorithmException {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(this.httpClientFactory());
+        SSLUtil.turnOffSslChecking();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity("https://my.surfshark.com/vpn/api/v1/server/clusters",String.class);
         String body = responseEntity.getBody();
         HttpStatus statusCode = responseEntity.getStatusCode();
@@ -34,7 +37,6 @@ public class SurfShark {
         HttpHeaders headers = responseEntity.getHeaders();
         JSONArray jsonArray= JSONArray.parseArray(body);
         if (jsonArray != null) {
-            SurfSharkService surfSharkService = new SurfSharkServiceImpl();
             SurfSharkEntity surfSharkEntity = new SurfSharkEntity();
             for (int i = 0; i<jsonArray.size(); i++) {
                 surfSharkEntity.setCountry(jsonArray.getJSONObject(i).get("country").toString());

@@ -2,11 +2,9 @@ package com.zxs.surfshark.beans;
 
 import com.alibaba.druid.support.monitor.annotation.MTable;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Data
-@EntityScan
-@MTable(name = "surfshark_info")
+@MTable(name="surfshark_info")
 public class SurfSharkEntity {
     String connectionName;
     String region;
