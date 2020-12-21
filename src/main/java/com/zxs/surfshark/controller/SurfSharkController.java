@@ -1,6 +1,7 @@
 package com.zxs.surfshark.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.beans.SurfSharkEntity;
 import com.zxs.surfshark.service.SurfSharkService;
 import com.zxs.surfshark.util.SSLUtil;
@@ -17,6 +18,8 @@ import java.net.Proxy;
 import java.net.SocketAddress;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class SurfSharkController {
@@ -25,7 +28,7 @@ public class SurfSharkController {
 
     @Autowired
     private SurfSharkService surfSharkService;
-    @RequestMapping(value = "/surfshark")
+    @RequestMapping(value = "/surf_shark")
     public String surfshark() throws KeyManagementException, NoSuchAlgorithmException {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(this.httpClientFactory());
@@ -37,25 +40,35 @@ public class SurfSharkController {
         HttpHeaders headers = responseEntity.getHeaders();
         JSONArray jsonArray= JSONArray.parseArray(body);
         if (jsonArray != null) {
-            SurfSharkEntity surfSharkEntity = new SurfSharkEntity();
-            for (int i = 0; i<jsonArray.size(); i++) {
-                surfSharkEntity.setCountry(jsonArray.getJSONObject(i).get("country").toString());
-                surfSharkEntity.setConnectionName(jsonArray.getJSONObject(i).get("connectionName").toString());
-                surfSharkEntity.setRegion(jsonArray.getJSONObject(i).get("region").toString());
-                surfSharkEntity.setRegionCode(jsonArray.getJSONObject(i).get("regionCode").toString());
-                surfSharkEntity.setLocation(jsonArray.getJSONObject(i).get("location").toString());
-                surfSharkEntity.setCountryCode(jsonArray.getJSONObject(i).get("countryCode").toString());
-                surfSharkEntity.setLoads(jsonArray.getJSONObject(i).getInteger("load"));
-                surfSharkEntity.setLatitude(jsonArray.getJSONObject(i).getDoubleValue("latitude"));
-                surfSharkEntity.setLongitude(jsonArray.getJSONObject(i).getDoubleValue("longitude"));
-                surfSharkEntity.setType(jsonArray.getJSONObject(i).get("type").toString());
-                surfSharkService.insertSurfshark(surfSharkEntity);
+            JSONObject object;
+            List<SurfSharkEntity> list = new ArrayList<>();
+            for (int i = 0 ; i < jsonArray.size() ; i++) {
+                object = jsonArray.getJSONObject(i);
+                SurfSharkEntity surfSharkEntity =  add(object);
+                list.add(surfSharkEntity);
             }
+            surfSharkService.insertSurfshark(list);
         }
         return  "responseEntity.getBody()：" + body + "<hr>" +
                 "responseEntity.getStatusCode()：" + statusCode + "<hr>" +
                 "responseEntity.getStatusCodeValue()：" + statusCodeValue + "<hr>" +
                 "responseEntity.getHeaders()：" + headers + "<hr>";
+    }
+
+    private SurfSharkEntity add(JSONObject object){
+        SurfSharkEntity surfSharkEntity = new SurfSharkEntity();
+        surfSharkEntity.setId(object.getString("id"));
+        surfSharkEntity.setCountry(object.getString("load"));
+        surfSharkEntity.setConnectionName(object.getString("ConnectionName"));
+        surfSharkEntity.setRegion(object.getString("ConnectionName"));
+        surfSharkEntity.setRegionCode(object.getString("regionCode"));
+        surfSharkEntity.setLocation(object.getString("location"));
+        surfSharkEntity.setCountryCode(object.getString("countryCode"));
+        surfSharkEntity.setLoad(object.getInteger("load"));
+        surfSharkEntity.setLatitude(object.getDoubleValue("latitude"));
+        surfSharkEntity.setLongitude(object.getDoubleValue("longitude"));
+        surfSharkEntity.setType(object.getString("type"));
+        return surfSharkEntity;
     }
 
     public SimpleClientHttpRequestFactory httpClientFactory(){

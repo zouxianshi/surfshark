@@ -6,14 +6,17 @@ spring:
     #数据源的基本配置
     username: root
     password: silvercrow@6133
-    url: jdbc:mysql://silvercrow.online:3306/surfshark?useUnicode=true&characterEncoding=utf-8&serverTimezone = UTC&useSSL=false
-    driver-class-name: com.alibaba.druid.proxy.DruidDriver
+    url: jdbc:mysql://49.233.207.137:3306/surfshark?useUnicode=true&characterEncoding=utf-8&serverTimezone = UTC&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      validation-query: SELECT 1 FROM surfshark;
+      validation-query: SELECT 1 FROM dual;
+      max-active: 10
+      initial-size: 5
+      min-idle: 2
 
-#mybatis:
-#  mapper-locations: classpath:mappers/*.xml
-#  configuration:
-#    cache-enabled: false
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis-plus:
+  mapper-locations: classpath:mybatis/*.xml
+  type-aliases-package: com.zxs.surfshark.beans
+  configuration:
+    map-underscore-to-camel-case: true

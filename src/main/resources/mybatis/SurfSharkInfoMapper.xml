@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.zxs.surfshark.mappers.SurfSharkEntityMapper">
+    <resultMap id="BaseResultMap" type="com.zxs.surfshark.beans.SurfSharkEntity">
+        <result column="connectionName" jdbcType="VARCHAR" property="connectionName"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="location" jdbcType="VARCHAR" property="location"/>
+        <result column="regionCode" jdbcType="VARCHAR" property="regionCode"/>
+        <result column="countryCode" jdbcType="TIMESTAMP" property="countryCode"/>
+        <result column="loads" jdbcType="BIGINT" property="load"/>
+        <result column="latitude" jdbcType="DOUBLE" property="latitude"/>
+        <result column="longitude" jdbcType="DOUBLE" property="longitude"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+    </resultMap>
+    <insert id="insertSurfSharkInfo">
+        INSERT INTO surf_shark_info (
+        connectionName,region,country,location,regionCode,countryCode,
+        loads,latitude,longitude,type,updatetime)
+        values
+        <foreach collection="surfSharkEntityList" item="item">
+        (#{item.connectionName},#{item.region},#{item.country},#{item.location},
+        #{item.regionCode},#{item.countryCode},#{item.load},#{item.latitude},#{item.longitude},
+        #{item.type},now())
+        </foreach>
+
+    </insert>
+</mapper>
