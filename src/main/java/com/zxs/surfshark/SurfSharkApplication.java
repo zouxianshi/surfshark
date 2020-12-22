@@ -1,15 +1,19 @@
 package com.zxs.surfshark;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+@EntityScan
 @SpringBootApplication
+@MapperScan
 @Slf4j
-public class SurfsharkApplication {
+public class SurfSharkApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SurfsharkApplication.class, args);
+        SpringApplication.run(SurfSharkApplication.class, args);
     }
 
 }
