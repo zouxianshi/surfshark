@@ -20,7 +20,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="SurfSharkInfoMap">
         select
-          id, connectionName, region, country, location, regionCode, countryCode, load, latitude, longitude, type, updatetime
+          id, connectionName, region, country, location, regionCode, countryCode, 'load', latitude, longitude, type, updatetime
         from surfshark.surf_shark_info
         where id = #{id}
     </select>
@@ -92,7 +92,7 @@
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.connectionname}, #{entity.region}, #{entity.country}, #{entity.location}, #{entity.regioncode},
             #{entity.countrycode}, #{entity.load}, #{entity.latitude}, #{entity.longitude}, #{entity.type},
-            #{entity.updatetime})
+            #{entity.updatetime}，now())
         </foreach>
     </insert>
 

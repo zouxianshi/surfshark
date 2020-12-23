@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @author makejava
  * @since 2020-12-22 21:38:49
  */
-
+@Repository
 public interface SurfSharkInfoDao {
 
     /**

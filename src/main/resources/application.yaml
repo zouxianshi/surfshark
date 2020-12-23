@@ -7,9 +7,13 @@ spring:
     username: root
     password: silvercrow@6133
     url: jdbc:mysql://silvercrow.online:3306/surfshark?useUnicode=true&characterEncoding=utf-8&serverTimezone = UTC&useSSL=false
-    driver-class-name: com.alibaba.druid.proxy.DruidDriver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      validation-query: SELECT 1 FROM surfshark;
+      validation-query: SELECT 1 FROM dual;
 
 
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

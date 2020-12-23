@@ -1,10 +1,11 @@
 package com.zxs.surfshark.controller;
 
 import com.alibaba.fastjson.JSONArray;
-
-import com.zxs.surfshark.service.impl.SurfSharkInfoServiceImpl;
+import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.entity.SurfSharkInfo;
 import com.zxs.surfshark.service.SurfSharkInfoService;
+import com.zxs.surfshark.service.impl.SurfSharkInfoServiceImpl;
+import com.zxs.surfshark.util.SSLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class SurfSharkInfoController {
     /**
      * 服务对象
      */
-    @Resource
+    @Autowired
     private SurfSharkInfoService surfSharkInfoService;
 
     /**
@@ -51,44 +54,48 @@ public class SurfSharkInfoController {
     }
 
 
-    @GetMapping(value = "/insertBatch")
-    public String insertBatch(){
+    @RequestMapping(value = "/insertBatch")
+    public String insertBatch() throws KeyManagementException, NoSuchAlgorithmException {
+        String url = "https://my.surfshark.com/vpn/api/v1/server/clusters";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(this.httpClientFactory());
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("https://my.surfshark.com/vpn/api/v1/server/clusters",String.class);
+        SSLUtil.turnOffSslChecking();
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         String body = responseEntity.getBody();
         HttpStatus statusCode = responseEntity.getStatusCode();
         int statusCodeValue = responseEntity.getStatusCodeValue();
         HttpHeaders headers = responseEntity.getHeaders();
         JSONArray jsonArray= JSONArray.parseArray(body);
-        System.out.print(body);
         if (jsonArray != null) {
-            SurfSharkInfoService surfSharkService = new SurfSharkInfoServiceImpl();
+            JSONObject object;
             List<SurfSharkInfo> list = new ArrayList<>();
-            for (int i = 0; i<jsonArray.size(); i++) {
-                SurfSharkInfo surfSharkInfo = new SurfSharkInfo();
-                surfSharkInfo.setCountry(jsonArray.getJSONObject(i).getString("country"));
-                surfSharkInfo.setConnectionname(jsonArray.getJSONObject(i).getString("connectionName"));
-                surfSharkInfo.setRegion(jsonArray.getJSONObject(i).getString("region"));
-                surfSharkInfo.setRegioncode(jsonArray.getJSONObject(i).getString("regionCode"));
-                surfSharkInfo.setLocation(jsonArray.getJSONObject(i).getString("location"));
-                surfSharkInfo.setCountrycode(jsonArray.getJSONObject(i).getString("countryCode"));
-                surfSharkInfo.setLoad(jsonArray.getJSONObject(i).getInteger("load"));
-                surfSharkInfo.setLatitude(jsonArray.getJSONObject(i).getDoubleValue("latitude"));
-                surfSharkInfo.setLongitude(jsonArray.getJSONObject(i).getDoubleValue("longitude"));
-                surfSharkInfo.setType(jsonArray.getJSONObject(i).getString("type"));
+            for (int i = 0 ; i < jsonArray.size() ; i++) {
+                object = jsonArray.getJSONObject(i);
+                SurfSharkInfo surfSharkInfo =  add(object);
                 list.add(surfSharkInfo);
-                System.out.print("\n"+list.get(i));
+                System.out.print("\n"+list.get(i).getConnectionname());
             }
-            System.out.print("\n"+list.size()+"\n");
-            surfSharkService.insertBatch(list);
-        }  else {
-            return "请求失败";
+            surfSharkInfoService.insertBatch(list);
         }
         return  "responseEntity.getBody()：" + body + "<hr>" +
                 "responseEntity.getStatusCode()：" + statusCode + "<hr>" +
                 "responseEntity.getStatusCodeValue()：" + statusCodeValue + "<hr>" +
                 "responseEntity.getHeaders()：" + headers + "<hr>";
+    }
+
+    private SurfSharkInfo add(JSONObject object){
+        SurfSharkInfo surfSharkInfo = new SurfSharkInfo();
+        surfSharkInfo.setCountry(object.getString("load"));
+        surfSharkInfo.setConnectionname(object.getString("ConnectionName"));
+        surfSharkInfo.setRegion(object.getString("ConnectionName"));
+        surfSharkInfo.setRegioncode(object.getString("regionCode"));
+        surfSharkInfo.setLocation(object.getString("location"));
+        surfSharkInfo.setCountrycode(object.getString("countryCode"));
+        surfSharkInfo.setLoad(object.getInteger("load"));
+        surfSharkInfo.setLatitude(object.getDoubleValue("latitude"));
+        surfSharkInfo.setLongitude(object.getDoubleValue("longitude"));
+        surfSharkInfo.setType(object.getString("type"));
+        return surfSharkInfo;
     }
 
     public SimpleClientHttpRequestFactory httpClientFactory(){
