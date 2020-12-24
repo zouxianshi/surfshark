@@ -15,7 +15,15 @@ import java.util.Date;
 public class SurfSharkInfo implements Serializable {
     private static final long serialVersionUID = 514170435909164494L;
 
-    private Long id;
+    private long id;
+    /**
+     * 连接Id
+     */
+    private String connectid;
+    /**
+     * IP地址
+     */
+    private String ipaddress;
     /**
      * 域名或HOST
      */

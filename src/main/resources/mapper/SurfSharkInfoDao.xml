@@ -3,159 +3,39 @@
 <mapper namespace="com.zxs.surfshark.dao.SurfSharkInfoDao">
 
     <resultMap type="com.zxs.surfshark.entity.SurfSharkInfo" id="SurfSharkInfoMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
-        <result property="connectionname" column="connectionName" jdbcType="VARCHAR"/>
+        <result property="connectid" column="connect_id" jdbcType="VARCHAR"/>
+        <result property="connectionname" column="connection_name" jdbcType="VARCHAR"/>
+        <result property="ipaddress" column="ip_address" jdbcType="VARCHAR"/>
         <result property="region" column="region" jdbcType="VARCHAR"/>
         <result property="country" column="country" jdbcType="VARCHAR"/>
         <result property="location" column="location" jdbcType="VARCHAR"/>
-        <result property="regioncode" column="regionCode" jdbcType="VARCHAR"/>
-        <result property="countrycode" column="countryCode" jdbcType="VARCHAR"/>
+        <result property="regioncode" column="region_code" jdbcType="VARCHAR"/>
+        <result property="countrycode" column="country_code" jdbcType="VARCHAR"/>
         <result property="load" column="load" jdbcType="INTEGER"/>
         <result property="latitude" column="latitude" jdbcType="NUMERIC"/>
         <result property="longitude" column="longitude" jdbcType="NUMERIC"/>
         <result property="type" column="type" jdbcType="VARCHAR"/>
-        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
-
-    <!--查询单个-->
-    <select id="queryById" resultMap="SurfSharkInfoMap">
-        select
-          id, connectionName, region, country, location, regionCode, countryCode, 'load', latitude, longitude, type, updatetime
-        from surfshark.surf_shark_info
-        where id = #{id}
-    </select>
-
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="SurfSharkInfoMap">
-        select
-          id, connectionName, region, country, location, regionCode, countryCode, load, latitude, longitude, type, updatetime
-        from surfshark.surf_shark_info
-        limit #{offset}, #{limit}
-    </select>
-
-    <!--通过实体作为筛选条件查询-->
-    <select id="queryAll" resultMap="SurfSharkInfoMap">
-        select
-        id, connectionName, region, country, location, regionCode, countryCode, load, latitude, longitude, type,
-        updatetime
-        from surfshark.surf_shark_info
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="connectionname != null and connectionname != ''">
-                and connectionName = #{connectionname}
-            </if>
-            <if test="region != null and region != ''">
-                and region = #{region}
-            </if>
-            <if test="country != null and country != ''">
-                and country = #{country}
-            </if>
-            <if test="location != null and location != ''">
-                and location = #{location}
-            </if>
-            <if test="regioncode != null and regioncode != ''">
-                and regionCode = #{regioncode}
-            </if>
-            <if test="countrycode != null and countrycode != ''">
-                and countryCode = #{countrycode}
-            </if>
-            <if test="load != null">
-                and load = #{load}
-            </if>
-            <if test="latitude != null">
-                and latitude = #{latitude}
-            </if>
-            <if test="longitude != null">
-                and longitude = #{longitude}
-            </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
-            </if>
-            <if test="updatetime != null">
-                and updatetime = #{updatetime}
-            </if>
-        </where>
-    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into surfshark.surf_shark_info(connectionName, region, country, location, regionCode, countryCode, load, latitude, longitude, type, updatetime)
-        values (#{connectionname}, #{region}, #{country}, #{location}, #{regioncode}, #{countrycode}, #{load}, #{latitude}, #{longitude}, #{type}, #{updatetime})
+        insert into surfshark.surf_shark_info(connect_id,connection_name,ip_address, region, country, location, region_code, country_code, 'load', latitude, longitude, type, update_time)
+        values (#{connectid},#{connectionname},#{ipaddress} #{region}, #{country}, #{location}, #{regioncode}, #{countrycode}, #{load}, #{latitude}, #{longitude}, #{type}, #{updatetime})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into surfshark.surf_shark_info(connectionName, region, country, location, regionCode, countryCode, load,
-        latitude, longitude, type, updatetime)
+        insert into surfshark.surf_shark_info(connect_id,connection_name,ip_address,region, country, location, region_code, country_code, `load`,
+        latitude, longitude, type, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.connectionname}, #{entity.region}, #{entity.country}, #{entity.location}, #{entity.regioncode},
-            #{entity.countrycode}, #{entity.load}, #{entity.latitude}, #{entity.longitude}, #{entity.type},
-            #{entity.updatetime}，now())
-        </foreach>
-    </insert>
-
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into surfshark.surf_shark_info(connectionName, region, country, location, regionCode, countryCode, load,
-        latitude, longitude, type, updatetime)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.connectionname}, #{entity.region}, #{entity.country}, #{entity.location}, #{entity.regioncode},
-            #{entity.countrycode}, #{entity.load}, #{entity.latitude}, #{entity.longitude}, #{entity.type},
-            #{entity.updatetime})
+            (#{entity.connectid},#{entity.connectionname},#{entity.ipaddress},#{entity.region}, #{entity.country}, #{entity.location}, #{entity.regioncode},
+            #{entity.countrycode}, #{entity.load}, #{entity.latitude}, #{entity.longitude}, #{entity.type},now())
         </foreach>
         on duplicate key update
-        connectionName = values(connectionName) , region = values(region) , country = values(country) , location =
-        values(location) , regionCode = values(regionCode) , countryCode = values(countryCode) , load = values(load) ,
-        latitude = values(latitude) , longitude = values(longitude) , type = values(type) , updatetime =
-        values(updatetime)
+        connect_id = values(connect_id),connection_name = values(connection_name) ,ip_address = values(ip_address), region = values(region) , country = values(country) , location =
+        values(location) , region_code = values(region_code) , country_code = values(country_code) , `load` = values(`load`) ,
+        latitude = values(latitude) , longitude = values(longitude) , type = values(type) , update_time =
+        values(update_time)
     </insert>
-
-    <!--通过主键修改数据-->
-    <update id="update">
-        update surfshark.surf_shark_info
-        <set>
-            <if test="connectionname != null and connectionname != ''">
-                connectionName = #{connectionname},
-            </if>
-            <if test="region != null and region != ''">
-                region = #{region},
-            </if>
-            <if test="country != null and country != ''">
-                country = #{country},
-            </if>
-            <if test="location != null and location != ''">
-                location = #{location},
-            </if>
-            <if test="regioncode != null and regioncode != ''">
-                regionCode = #{regioncode},
-            </if>
-            <if test="countrycode != null and countrycode != ''">
-                countryCode = #{countrycode},
-            </if>
-            <if test="load != null">
-                load = #{load},
-            </if>
-            <if test="latitude != null">
-                latitude = #{latitude},
-            </if>
-            <if test="longitude != null">
-                longitude = #{longitude},
-            </if>
-            <if test="type != null and type != ''">
-                type = #{type},
-            </if>
-            <if test="updatetime != null">
-                updatetime = #{updatetime},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
-
-    <!--通过主键删除-->
-    <delete id="deleteById">
-        delete from surfshark.surf_shark_info where id = #{id}
-    </delete>
-
 </mapper>

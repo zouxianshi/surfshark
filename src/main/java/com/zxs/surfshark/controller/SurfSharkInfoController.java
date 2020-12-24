@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.entity.SurfSharkInfo;
 import com.zxs.surfshark.service.SurfSharkInfoService;
 import com.zxs.surfshark.service.impl.SurfSharkInfoServiceImpl;
+import com.zxs.surfshark.util.NetTool;
 import com.zxs.surfshark.util.SSLUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("surfSharkInfo")
+@Slf4j
 public class SurfSharkInfoController {
     private static final String PROXY_HOST = "127.0.0.1";
     private static final int PROXY_PORT = 1080;
@@ -41,18 +44,6 @@ public class SurfSharkInfoController {
      */
     @Autowired
     private SurfSharkInfoService surfSharkInfoService;
-
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("selectOne")
-    public SurfSharkInfo selectOne(Long id) {
-        return this.surfSharkInfoService.queryById(id);
-    }
-
 
     @RequestMapping(value = "/insertBatch")
     public String insertBatch() throws KeyManagementException, NoSuchAlgorithmException {
@@ -68,12 +59,16 @@ public class SurfSharkInfoController {
         JSONArray jsonArray= JSONArray.parseArray(body);
         if (jsonArray != null) {
             JSONObject object;
+            NetTool netTool = new NetTool();
             List<SurfSharkInfo> list = new ArrayList<>();
             for (int i = 0 ; i < jsonArray.size() ; i++) {
                 object = jsonArray.getJSONObject(i);
                 SurfSharkInfo surfSharkInfo =  add(object);
+                String ip = netTool.getIp(jsonArray.getJSONObject(i).getString("connectionName"));
+                surfSharkInfo.setIpaddress(ip);
                 list.add(surfSharkInfo);
-                System.out.print("\n"+list.get(i).getConnectionname());
+                System.out.print("\n"+jsonArray.getJSONObject(i).toString());
+                System.out.print("\n"+list.get(i).toString());
             }
             surfSharkInfoService.insertBatch(list);
         }
@@ -85,15 +80,16 @@ public class SurfSharkInfoController {
 
     private SurfSharkInfo add(JSONObject object){
         SurfSharkInfo surfSharkInfo = new SurfSharkInfo();
+        surfSharkInfo.setConnectid(object.getString("id"));
         surfSharkInfo.setCountry(object.getString("load"));
-        surfSharkInfo.setConnectionname(object.getString("ConnectionName"));
-        surfSharkInfo.setRegion(object.getString("ConnectionName"));
+        surfSharkInfo.setConnectionname(object.getString("connectionName"));
+        surfSharkInfo.setRegion(object.getString("region"));
         surfSharkInfo.setRegioncode(object.getString("regionCode"));
         surfSharkInfo.setLocation(object.getString("location"));
         surfSharkInfo.setCountrycode(object.getString("countryCode"));
         surfSharkInfo.setLoad(object.getInteger("load"));
-        surfSharkInfo.setLatitude(object.getDoubleValue("latitude"));
-        surfSharkInfo.setLongitude(object.getDoubleValue("longitude"));
+        surfSharkInfo.setLatitude(object.getJSONObject("coordinates").getDoubleValue("latitude"));
+        surfSharkInfo.setLongitude(object.getJSONObject("coordinates").getDoubleValue("longitude"));
         surfSharkInfo.setType(object.getString("type"));
         return surfSharkInfo;
     }
