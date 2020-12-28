@@ -1,12 +1,7 @@
 package com.zxs.surfshark.dao;
 
 import com.zxs.surfshark.entity.SurfSharkInfo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,7 +27,6 @@ public interface SurfSharkInfoDao {
      * 批量新增或按主键更新数据（MyBatis原生foreach方法）
      *
      * @param entities List<SurfSharkInfo> 实例对象列表
-     * @return 影响行数
      */
     void insertBatch(@Param("entities") List<SurfSharkInfo> entities);
 }

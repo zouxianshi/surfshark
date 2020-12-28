@@ -3,7 +3,6 @@ package com.zxs.surfshark.util;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 
 public class NetTool {
     public void getDomain(String ipaddress){
@@ -29,5 +28,17 @@ public class NetTool {
             System.err.println("Unable to find: " + domain);
             return "解析失败";
         }
+    }
+
+    public static long responseTime (String ipAddress) throws Exception {
+        int  timeOut =  3000 ;   // 超时应该在3钞以上
+        long begin=System.currentTimeMillis();
+        boolean status = InetAddress.getByName(ipAddress).isReachable(timeOut);
+        if (status){
+            return (System.currentTimeMillis()-begin);
+        }else {
+            return 0;
+        }
+
     }
 }
