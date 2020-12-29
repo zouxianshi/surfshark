@@ -71,7 +71,7 @@ public class SurfSharkInfoController {
         SurfSharkInfo surfSharkInfo = new SurfSharkInfo();
         surfSharkInfo.setConnectid(object.getString("id"));
         surfSharkInfo.setCountry(object.getString("load"));
-        surfSharkInfo.setConnectionname(object.getString("connectionName"));
+        surfSharkInfo.setConnectname(object.getString("connectionName"));
         surfSharkInfo.setRegion(object.getString("region"));
         surfSharkInfo.setRegioncode(object.getString("regionCode"));
         surfSharkInfo.setLocation(object.getString("location"));

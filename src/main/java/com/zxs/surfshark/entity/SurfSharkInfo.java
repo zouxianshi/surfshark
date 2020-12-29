@@ -27,7 +27,7 @@ public class SurfSharkInfo implements Serializable {
     /**
      * 域名或HOST
      */
-    private String connectionname;
+    private String connectname;
     /**
      * 大洲
      */

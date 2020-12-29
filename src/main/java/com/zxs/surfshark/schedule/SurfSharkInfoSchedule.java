@@ -26,6 +26,5 @@ public class SurfSharkInfoSchedule {
     }
 
     public void responseTime(){
-
     }
 }

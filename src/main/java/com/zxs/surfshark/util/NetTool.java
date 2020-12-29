@@ -34,8 +34,9 @@ public class NetTool {
         int  timeOut =  3000 ;   // 超时应该在3钞以上
         long begin=System.currentTimeMillis();
         boolean status = InetAddress.getByName(ipAddress).isReachable(timeOut);
+        long end=System.currentTimeMillis();
         if (status){
-            return (System.currentTimeMillis()-begin);
+            return (end-begin);
         }else {
             return 0;
         }

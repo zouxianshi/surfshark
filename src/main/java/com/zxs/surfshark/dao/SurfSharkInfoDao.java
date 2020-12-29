@@ -29,4 +29,8 @@ public interface SurfSharkInfoDao {
      * @param entities List<SurfSharkInfo> 实例对象列表
      */
     void insertBatch(@Param("entities") List<SurfSharkInfo> entities);
+
+    List<SurfSharkInfo> queryAll();
+
+    void update(List<SurfSharkInfo> entities);
 }

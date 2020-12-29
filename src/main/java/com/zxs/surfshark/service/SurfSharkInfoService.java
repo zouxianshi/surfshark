@@ -13,13 +13,8 @@ import java.util.List;
  */
 @Service
 public interface SurfSharkInfoService {
-    /**
-     * 新增数据
-     *
-     * @param surfSharkInfo 实例对象
-     * @return 实例对象
-     */
-    SurfSharkInfo insert(SurfSharkInfo surfSharkInfo);
+
+    List<SurfSharkInfo> queryAll();
 
     /**
      * 批量新增数据
