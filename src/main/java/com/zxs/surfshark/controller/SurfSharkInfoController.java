@@ -7,6 +7,8 @@ import com.zxs.surfshark.service.SurfSharkInfoService;
 import com.zxs.surfshark.util.HttpClientFactory;
 import com.zxs.surfshark.util.NetTool;
 import com.zxs.surfshark.util.SSLUtil;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import java.util.List;
  * @author makejava
  * @since 2020-12-22 21:38:49
  */
+@Slf4j
 @RestController
 @RequestMapping("surfSharkInfo")
 public class SurfSharkInfoController {
@@ -56,8 +59,7 @@ public class SurfSharkInfoController {
                 String ip = netTool.getIp(jsonArray.getJSONObject(i).getString("connectionName"));
                 surfSharkInfo.setIpaddress(ip);
                 list.add(surfSharkInfo);
-                System.out.print("\n"+jsonArray.getJSONObject(i).toString());
-                System.out.print("\n"+list.get(i).toString());
+                log.info("\n"+jsonArray.getJSONObject(i).toString());
             }
             surfSharkInfoService.insertBatch(list);
         }

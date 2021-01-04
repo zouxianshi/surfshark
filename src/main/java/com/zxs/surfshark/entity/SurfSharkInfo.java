@@ -61,10 +61,15 @@ public class SurfSharkInfo implements Serializable {
      */
     private Double longitude;
 
+
+
     private String type;
     /**
      * 更新时间
      */
     private Date updatetime;
+
+
+    private String ping;
 
 }

@@ -16,12 +16,17 @@
         <result property="longitude" column="longitude" jdbcType="NUMERIC"/>
         <result property="type" column="type" jdbcType="VARCHAR"/>
         <result property="updatetime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="ping" column="ping" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ip" type="java.util.HashMap">
+        <result column="ip_address" jdbcType="VARCHAR"/>
+        <result column="ping" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into surfshark.surf_shark_info(connect_id,connect_name,ip_address, region, country, location, region_code, country_code, 'load', latitude, longitude, type, update_time)
-        values (#{connectid},#{connectionname},#{ipaddress} #{region}, #{country}, #{location}, #{regioncode}, #{countrycode}, #{load}, #{latitude}, #{longitude}, #{type}, #{updatetime})
+        values (#{connectid},#{connectname},#{ipaddress} #{region}, #{country}, #{location}, #{regioncode}, #{countrycode}, #{load}, #{latitude}, #{longitude}, #{type}, #{updatetime})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
@@ -29,7 +34,7 @@
         latitude, longitude, type, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.connectid},#{entity.connectionname},#{entity.ipaddress},#{entity.region}, #{entity.country}, #{entity.location}, #{entity.regioncode},
+            (#{entity.connectid},#{entity.connectname},#{entity.ipaddress},#{entity.region}, #{entity.country}, #{entity.location}, #{entity.regioncode},
             #{entity.countrycode}, #{entity.load}, #{entity.latitude}, #{entity.longitude}, #{entity.type},now())
         </foreach>
         on duplicate key update
@@ -39,65 +44,15 @@
         values(update_time)
     </insert>
 
-    <select id="queryAll" resultMap="SurfSharkInfoMap">
-        select
-        id, connect_id, connect_name, ip_address, region, country, location, region_code, country_code, `load`,
-        latitude, longitude, type, update_time
+    <select id="queryIp" resultType="java.lang.String">
+        select ip_address
         from surfshark.surf_shark_info
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="connectId != null and connectId != ''">
-                and connect_id = #{connectId}
-            </if>
-            <if test="connectionName != null and connectionName != ''">
-                and connect_name = #{connectionName}
-            </if>
-            <if test="ipAddress != null and ipAddress != ''">
-                and ip_address = #{ipAddress}
-            </if>
-            <if test="region != null and region != ''">
-                and region = #{region}
-            </if>
-            <if test="country != null and country != ''">
-                and country = #{country}
-            </if>
-            <if test="location != null and location != ''">
-                and location = #{location}
-            </if>
-            <if test="regionCode != null and regionCode != ''">
-                and region_code = #{regionCode}
-            </if>
-            <if test="countryCode != null and countryCode != ''">
-                and country_code = #{countryCode}
-            </if>
-            <if test="load != null">
-                and load = #{load}
-            </if>
-            <if test="latitude != null">
-                and latitude = #{latitude}
-            </if>
-            <if test="longitude != null">
-                and longitude = #{longitude}
-            </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
-            </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-        </where>
     </select>
 
-    <update id="update" keyProperty="id" useGeneratedKeys="true">
+    <update id="updatePing" keyProperty="id" useGeneratedKeys="true">
         <foreach collection="entities" item="entity" separator=",">
         update surfshark.surf_shark_info
-        <set>
-            <if test="ping != null and ping != ''">
-                ping = #{entity.ping},
-            </if>
-        </set>
+        set ping = #{entity.ping}
         where ip_address = #{entity.ipaddress}
         </foreach>
     </update>

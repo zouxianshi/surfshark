@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * surfshark节点信息(SurfSharkInfo)表数据库访问层
@@ -30,7 +31,7 @@ public interface SurfSharkInfoDao {
      */
     void insertBatch(@Param("entities") List<SurfSharkInfo> entities);
 
-    List<SurfSharkInfo> queryAll();
+    List<String> queryIp();
 
-    void update(List<SurfSharkInfo> entities);
+    void updatePing(@Param("entities") List<SurfSharkInfo> entities);
 }

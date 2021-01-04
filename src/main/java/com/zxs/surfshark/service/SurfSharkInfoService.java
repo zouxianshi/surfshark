@@ -14,11 +14,13 @@ import java.util.List;
 @Service
 public interface SurfSharkInfoService {
 
-    List<SurfSharkInfo> queryAll();
+    List<String> queryIp();
 
     /**
      * 批量新增数据
      *
      */
     void insertBatch(List<SurfSharkInfo> list);
+
+    void updatePing(List<SurfSharkInfo> list);
 }

@@ -21,13 +21,18 @@ public class SurfSharkInfoServiceImpl implements SurfSharkInfoService {
     private SurfSharkInfoDao surfSharkInfoDao;
 
     @Override
-    public List<SurfSharkInfo> queryAll() {
-        return this.surfSharkInfoDao.queryAll();
+    public List<String> queryIp() {
+        return this.surfSharkInfoDao.queryIp();
     }
 
     @Override
     public void insertBatch(@Param("entities") List<SurfSharkInfo> list) {
         this.surfSharkInfoDao.insertBatch(list);
+    }
+
+    @Override
+    public void updatePing(@Param("entities") List<SurfSharkInfo> list) {
+        this.surfSharkInfoDao.updatePing(list);
     }
 
 }
