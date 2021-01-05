@@ -4,6 +4,7 @@ import com.zxs.surfshark.entity.SurfSharkInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * surfshark节点信息(SurfSharkInfo)表服务接口
@@ -22,5 +23,5 @@ public interface SurfSharkInfoService {
      */
     void insertBatch(List<SurfSharkInfo> list);
 
-    void updatePing(List<SurfSharkInfo> list);
+    void updatePing(List<Map<String, String>> list);
 }

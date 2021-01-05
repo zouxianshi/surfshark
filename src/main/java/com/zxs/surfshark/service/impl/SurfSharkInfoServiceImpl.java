@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * surfshark节点信息(SurfSharkInfo)表服务实现类
@@ -31,7 +32,7 @@ public class SurfSharkInfoServiceImpl implements SurfSharkInfoService {
     }
 
     @Override
-    public void updatePing(@Param("entities") List<SurfSharkInfo> list) {
+    public void updatePing(@Param("list") List<Map<String, String>> list) {
         this.surfSharkInfoDao.updatePing(list);
     }
 
