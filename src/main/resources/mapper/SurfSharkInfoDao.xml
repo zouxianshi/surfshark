@@ -54,7 +54,7 @@
         SET ping = CASE ip_address
         <foreach collection="list" item="items" index="i">
             <foreach collection="items.entrySet()" item="value" index="key">
-                WHEN #{map.key} THEN #{map.ping}
+                WHEN #{key} THEN #{value}
             </foreach>
         </foreach>
         END

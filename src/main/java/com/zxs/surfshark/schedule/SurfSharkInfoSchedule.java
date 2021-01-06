@@ -26,7 +26,7 @@ public class SurfSharkInfoSchedule {
     @Autowired
     private SurfSharkInfoService surfSharkInfoService;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0/10 * * * * *")
     public void schedule() {
         try {
             surfSharkInfoController.insertBatch();
@@ -38,26 +38,26 @@ public class SurfSharkInfoSchedule {
     /**
      * 更新访问延迟
      */
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron ="0 0 0 * * *")
     @Transactional
     public void updateResponseTime(){
         List<String> ip = surfSharkInfoService.queryIp();
         List<Map<String, String>> list = new ArrayList<>();
         NetTool netTool = new NetTool();
-//        for (String s : ip) {
+        for (String s : ip) {
             try {
                 Map<String, String> map = new HashMap<>();
-                String time = String.valueOf(netTool.responseTime(ip.get(0)));
+                String time = String.valueOf(netTool.responseTime(s));
                 if (time.equals("0")){
                     time = "延迟大于3000ms";
                 }
-                System.out.print(ip.get(0)+":"+time+"\n");
-                map.put(ip.get(0),time);
+                System.out.print(s +":"+time+"\n");
+                map.put(s,time);
                 list.add(map);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//        }
+        }
         System.out.println(list);
         surfSharkInfoService.updatePing(list);
     }

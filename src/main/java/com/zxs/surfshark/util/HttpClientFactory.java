@@ -6,8 +6,8 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
 
+
 public class HttpClientFactory {
-    private static final String PROXY_HOST = "127.0.0.1";
     private static final int PROXY_PORT = 1080;
     public SimpleClientHttpRequestFactory httpClientFactory(){
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
