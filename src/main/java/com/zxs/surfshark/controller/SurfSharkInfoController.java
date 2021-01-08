@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.entity.SurfSharkInfo;
 import com.zxs.surfshark.service.SurfSharkInfoService;
+import com.zxs.surfshark.util.BasicAuthenticator;
 import com.zxs.surfshark.util.HttpClientFactory;
 import com.zxs.surfshark.util.NetTool;
 import com.zxs.surfshark.util.SSLUtil;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -56,10 +56,19 @@ public class SurfSharkInfoController {
             for (int i = 0 ; i < jsonArray.size() ; i++) {
                 object = jsonArray.getJSONObject(i);
                 SurfSharkInfo surfSharkInfo =  add(object);
-                String ip = netTool.getIp(jsonArray.getJSONObject(i).getString("connectionName"));
-                surfSharkInfo.setIpaddress(ip);
-                list.add(surfSharkInfo);
-                log.info("\n"+jsonArray.getJSONObject(i).toString());
+                try{
+                    JSONObject ip = netTool.getIp2(jsonArray.getJSONObject(i).getString("connectionName"));
+                    String IP = ip.get("ip").toString();
+                    surfSharkInfo.setIpaddress(IP);
+                    list.add(surfSharkInfo);
+                    log.info("\n"+jsonArray.getJSONObject(i).toString());
+                }catch (Exception e){
+                    String IP = "域名解析超时";
+                    surfSharkInfo.setIpaddress(IP);
+                    list.add(surfSharkInfo);
+                    log.info("\n"+jsonArray.getJSONObject(i).toString());
+                }
+
             }
             surfSharkInfoService.insertBatch(list);
         }
@@ -83,6 +92,7 @@ public class SurfSharkInfoController {
         surfSharkInfo.setLongitude(object.getJSONObject("coordinates").getDoubleValue("longitude"));
         surfSharkInfo.setType(object.getString("type"));
         return surfSharkInfo;
-    }
+    }   
+
 
 }

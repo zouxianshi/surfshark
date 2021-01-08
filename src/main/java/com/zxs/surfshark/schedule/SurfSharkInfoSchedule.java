@@ -26,7 +26,7 @@ public class SurfSharkInfoSchedule {
     @Autowired
     private SurfSharkInfoService surfSharkInfoService;
 
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void schedule() {
         try {
             surfSharkInfoController.insertBatch();
@@ -47,9 +47,14 @@ public class SurfSharkInfoSchedule {
         for (String s : ip) {
             try {
                 Map<String, String> map = new HashMap<>();
-                String time = String.valueOf(netTool.responseTime(s));
-                if (time.equals("0")){
-                    time = "延迟大于3000ms";
+                String time;
+                if (!s.equals("域名解析超时")){
+                    time = String.valueOf(netTool.responseTime(s));
+                    if (time.equals("0")){
+                        time = "延迟大于3000ms";
+                    }
+                }else{
+                    time = "未知主机";
                 }
                 System.out.print(s +":"+time+"\n");
                 map.put(s,time);
