@@ -44,7 +44,7 @@ public class NetTool {
     }
 
     public JSONObject getIp2(String domain) throws KeyManagementException, NoSuchAlgorithmException {
-        RestTemplate restTemplate = new BasicAuthenticator().restTemplate();
+        RestTemplate restTemplate = new RestTemplate();
         //设置代理
         SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new HttpClientFactory().httpClientFactory();
         restTemplate.setRequestFactory(simpleClientHttpRequestFactory);

@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.net.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ public class SurfSharkInfoController {
 
     @RequestMapping(value = "/insertBatch")
     public String insertBatch() throws KeyManagementException, NoSuchAlgorithmException {
-        String url = "https://my.surfshark.com/vpn/api/v1/server/clusters";
+        String url ="https://my.surfshark.com/vpn/api/v1/server/clusters";
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpClientFactory().httpClientFactory());
         SSLUtil.turnOffSslChecking();
@@ -68,7 +71,6 @@ public class SurfSharkInfoController {
                     list.add(surfSharkInfo);
                     log.info("\n"+jsonArray.getJSONObject(i).toString());
                 }
-
             }
             surfSharkInfoService.insertBatch(list);
         }
@@ -92,7 +94,8 @@ public class SurfSharkInfoController {
         surfSharkInfo.setLongitude(object.getJSONObject("coordinates").getDoubleValue("longitude"));
         surfSharkInfo.setType(object.getString("type"));
         return surfSharkInfo;
-    }   
+    }
+
 
 
 }

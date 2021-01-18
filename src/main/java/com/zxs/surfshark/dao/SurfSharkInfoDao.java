@@ -34,4 +34,5 @@ public interface SurfSharkInfoDao {
     List<String> queryIp();
 
     void updatePing(@Param("list") List<Map<String, String>> list);
+
 }

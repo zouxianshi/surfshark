@@ -16,6 +16,7 @@ import java.util.Random;
 @Slf4j
 public class SurfSharkApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(SurfSharkApplication.class, args);
     }
