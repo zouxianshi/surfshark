@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.entity.SurfSharkInfo;
 import com.zxs.surfshark.service.SurfSharkInfoService;
-import com.zxs.surfshark.util.BasicAuthenticator;
 import com.zxs.surfshark.util.HttpClientFactory;
 import com.zxs.surfshark.util.NetTool;
 import com.zxs.surfshark.util.SSLUtil;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.net.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -42,9 +39,9 @@ public class SurfSharkInfoController {
 
     @RequestMapping(value = "/insertBatch")
     public String insertBatch() throws KeyManagementException, NoSuchAlgorithmException {
-        String url ="https://my.surfshark.com/vpn/api/v1/server/clusters";
+        String url ="https://sharkychina.com/api/v1/server/clusters";
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpClientFactory().httpClientFactory());
+//        restTemplate.setRequestFactory(new HttpClientFactory().httpClientFactory());
         SSLUtil.turnOffSslChecking();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         String body = responseEntity.getBody();

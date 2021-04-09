@@ -6,7 +6,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
@@ -22,7 +21,6 @@ public class NetTool {
     public void getDomain(String ipaddress) {
         try {
             String doamin = InetAddress.getByName(ipaddress).getHostName();
-//            String doamin = Address.getHostName(InetAddress.getByName(ipaddress));
             System.out.println(doamin);
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -46,20 +44,21 @@ public class NetTool {
     public JSONObject getIp2(String domain) throws KeyManagementException, NoSuchAlgorithmException {
         RestTemplate restTemplate = new RestTemplate();
         //设置代理
-        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new HttpClientFactory().httpClientFactory();
-        restTemplate.setRequestFactory(simpleClientHttpRequestFactory);
+//        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new HttpClientFactory().httpClientFactory();
+//        restTemplate.setRequestFactory(simpleClientHttpRequestFactory);
 
         //设置请求头和请求体
-        String url = "https://zh.wizcase.com/wp-content/themes/wizcase/tools/tool_ip_backend.php?ip=";
+        String url = "https://dns.google/resolve";
         Map<String, String> params = new HashMap<>();
-        params.put("ip", domain);
+        params.put("name", domain);
+        params.put("type","1");
 
         //设置请求头参数
         HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("x-requested-with", "XMLHttpRequest");
+//        requestHeaders.add("x-requested-with", "XMLHttpRequest");
         HttpEntity request = new HttpEntity(requestHeaders);
         SSLUtil.turnOffSslChecking();
-        ResponseEntity<JSONObject> exchange = restTemplate.exchange(url + domain, HttpMethod.GET, request, JSONObject.class, params);
+        ResponseEntity<JSONObject> exchange = restTemplate.exchange(url, HttpMethod.GET, request, JSONObject.class, params);
         System.out.println(exchange.getBody());
         return exchange.getBody();
     }

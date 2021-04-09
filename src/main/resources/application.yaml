@@ -21,3 +21,17 @@ mybatis:
 logging:
   pattern:
     console: (%msg%n%n){blue}
+
+
+#xxl-job
+xxl:
+  job:
+    admin:
+      addresses: silvercrow.online:8088
+    executor:
+      appname: surfshark-job
+      ip:
+      port: 9999
+      logpath: /data/xxl-job/jobhandler
+      logretentiondays: -1
+    accessToken:

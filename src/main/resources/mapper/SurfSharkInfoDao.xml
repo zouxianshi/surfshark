@@ -51,7 +51,7 @@
 
     <update id="updatePing" parameterType="java.util.Map">
         UPDATE surfshark.surf_shark_info
-        SET ping = CASE ip_address
+        SET update_time = now(),ping = CASE ip_address
         <foreach collection="list" item="items" index="i">
             <foreach collection="items.entrySet()" item="value" index="key">
                 WHEN #{key} THEN #{value}
