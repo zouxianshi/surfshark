@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zxs.surfshark.entity.SurfSharkInfo;
 import com.zxs.surfshark.service.SurfSharkInfoService;
-import com.zxs.surfshark.util.HttpClientFactory;
 import com.zxs.surfshark.util.NetTool;
 import com.zxs.surfshark.util.SSLUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,6 @@ public class SurfSharkInfoController {
     public String insertBatch() throws KeyManagementException, NoSuchAlgorithmException {
         String url ="https://sharkychina.com/api/v1/server/clusters";
         RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.setRequestFactory(new HttpClientFactory().httpClientFactory());
         SSLUtil.turnOffSslChecking();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         String body = responseEntity.getBody();

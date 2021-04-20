@@ -55,7 +55,6 @@ public class NetTool {
 
         //设置请求头参数
         HttpHeaders requestHeaders = new HttpHeaders();
-//        requestHeaders.add("x-requested-with", "XMLHttpRequest");
         HttpEntity request = new HttpEntity(requestHeaders);
         SSLUtil.turnOffSslChecking();
         ResponseEntity<JSONObject> exchange = restTemplate.exchange(url, HttpMethod.GET, request, JSONObject.class, params);

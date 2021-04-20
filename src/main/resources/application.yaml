@@ -27,11 +27,11 @@ logging:
 xxl:
   job:
     admin:
-      addresses: silvercrow.online:8088
+      addresses: http://silvercrow.online:8088
     executor:
       appname: surfshark-job
-      ip:
-      port: 9999
+      ip: 113.246.243.115
+      port: 9998
       logpath: /data/xxl-job/jobhandler
       logretentiondays: -1
     accessToken:
