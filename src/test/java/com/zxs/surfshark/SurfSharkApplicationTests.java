@@ -8,7 +8,7 @@ class SurfSharkApplicationTests {
 
     @Test
     void contextLoads() {
-    }
 
+    }
 
 }

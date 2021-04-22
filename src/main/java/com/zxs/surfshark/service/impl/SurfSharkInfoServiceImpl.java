@@ -36,4 +36,5 @@ public class SurfSharkInfoServiceImpl implements SurfSharkInfoService {
         this.surfSharkInfoDao.updatePing(list);
     }
 
+
 }
